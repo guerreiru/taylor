@@ -58,6 +58,17 @@
 			font-size: 1.2em;
 			color: #ffeb3b;
 		}
+
+		.incorrect-answers {
+			display: none;
+			margin-top: 20px;
+			text-align: left;
+			color: #ffcdd2;
+		}
+
+		.incorrect-answers p {
+			margin-bottom: 15px;
+		}
 	</style>
 </head>
 
@@ -70,7 +81,7 @@
 		</div>
 		<div class="result" id="result"></div>
 		<div class="prize" id="prize">🎉 Parabéns! Você ganhou um prêmio especial! 🎁</div>
-		<div class="prize" id="prize">Entre em contato com Fernando Guerreiro para receber seu prêmio</div>
+		<div class="incorrect-answers" id="incorrect-answers"></div>
 	</div>
 
 	<script>
@@ -146,6 +157,9 @@
 		}
 
 		function checkAnswer(selectedOption) {
+			// Salva a resposta escolhida pelo usuário
+			questions[currentQuestion].selectedAnswer = selectedOption;
+
 			if (selectedOption === questions[currentQuestion].answer) {
 				score++;
 			}
@@ -163,6 +177,7 @@
 			const quizElement = document.getElementById('quiz');
 			const resultElement = document.getElementById('result');
 			const prizeElement = document.getElementById('prize');
+			const incorrectAnswersElement = document.getElementById('incorrect-answers');
 
 			quizElement.style.display = 'none';
 
@@ -171,6 +186,21 @@
 			} else {
 				resultElement.textContent = `Você acertou ${score} de ${questions.length} perguntas.`;
 				resultElement.style.display = 'block';
+
+				const incorrectAnswers = questions
+					.map((q, index) => {
+						if (q.selectedAnswer !== q.answer) {
+							return `<p><strong>Pergunta ${index + 1}:</strong> "${q.question}"<br>
+								🛑 Sua resposta: <em>${q.selectedAnswer || 'Nenhuma'}</em><br>
+								✅ Resposta correta: <em>${q.answer}</em></p>`;
+						}
+						return '';
+					})
+					.filter(Boolean)
+					.join('');
+
+				incorrectAnswersElement.innerHTML = incorrectAnswers;
+				incorrectAnswersElement.style.display = 'block';
 			}
 		}
 
