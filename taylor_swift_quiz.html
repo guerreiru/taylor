@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Quiz Taylor Swift</title>
+	<style>
+		body {
+			margin: 0;
+			font-family: Arial, sans-serif;
+			background: url('./bg.jpg') no-repeat center center fixed;
+			background-size: cover;
+			color: white;
+			text-align: center;
+		}
+
+		.quiz-container {
+			background: rgba(0, 0, 0, 0.7);
+			padding: 20px;
+			border-radius: 10px;
+			max-width: 600px;
+			margin: 50px auto;
+		}
+
+		h1 {
+			font-size: 2.5em;
+		}
+
+		.question {
+			margin: 20px 0;
+		}
+
+		.options button {
+			background: #ff4081;
+			color: white;
+			border: none;
+			padding: 10px 20px;
+			margin: 5px;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 1em;
+		}
+
+		.options button:hover {
+			background: #e91e63;
+		}
+
+		.result {
+			display: none;
+			margin-top: 20px;
+			font-size: 1.5em;
+		}
+
+		.prize {
+			display: none;
+			margin-top: 20px;
+			font-size: 1.2em;
+			color: #ffeb3b;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="quiz-container">
+		<h1>Quiz da Taylor Swift</h1>
+		<div id="quiz">
+			<div class="question" id="question">Carregando pergunta...</div>
+			<div class="options" id="options"></div>
+		</div>
+		<div class="result" id="result"></div>
+		<div class="prize" id="prize">🎉 Parabéns! Você ganhou um prêmio especial! 🎁</div>
+		<div class="prize" id="prize">Entre em contato com Fernando Guerreiro para receber seu prêmio</div>
+	</div>
+
+	<script>
+		const questions = [
+			{
+				question: "Qual é o nome do primeiro álbum da Taylor Swift?",
+				options: ["Fearless", "Taylor Swift", "Red", "1989"],
+				answer: "Taylor Swift"
+			},
+			{
+				question: "Em que ano foi lançado o álbum '1989'?",
+				options: ["2012", "2014", "2016", "2018"],
+				answer: "2014"
+			},
+			{
+				question: "Qual música da Taylor ganhou o Grammy de Música do Ano em 2021?",
+				options: ["Cardigan", "Willow", "All Too Well", "Love Story"],
+				answer: "Cardigan"
+			},
+			{
+				question: "Qual é o nome do álbum que inclui a música 'All Too Well'?",
+				options: ["Red", "Speak Now", "Fearless", "Lover"],
+				answer: "Red"
+			},
+			{
+				question: "Qual é o nome da turnê de 2023 da Taylor Swift?",
+				options: ["Reputation Tour", "Eras Tour", "Lover Fest", "Fearless Tour"],
+				answer: "Eras Tour"
+			},
+			{
+				question: "Qual música da Taylor menciona 'Romeu e Julieta'?",
+				options: ["Love Story", "You Belong With Me", "Enchanted", "White Horse"],
+				answer: "Love Story"
+			},
+			{
+				question: "Qual é o nome do documentário da Taylor lançado na Netflix?",
+				options: ["Miss Americana", "Folklore: The Long Pond Studio Sessions", "The Taylor Diaries", "Reputation"],
+				answer: "Miss Americana"
+			},
+			{
+				question: "Qual álbum foi regravado e lançado como 'Taylor's Version' em 2021?",
+				options: ["Fearless", "Red", "1989", "Speak Now"],
+				answer: "Fearless"
+			},
+			{
+				question: "Qual música da Taylor menciona 'August slipped away'?",
+				options: ["August", "Betty", "Cardigan", "Exile"],
+				answer: "August"
+			},
+			{
+				question: "Qual é o nome do gato mais famoso da Taylor Swift?",
+				options: ["Meredith", "Olivia", "Benjamin", "Max"],
+				answer: "Meredith"
+			}
+		];
+
+		let currentQuestion = 0;
+		let score = 0;
+
+		function loadQuestion() {
+			const questionElement = document.getElementById('question');
+			const optionsElement = document.getElementById('options');
+
+			questionElement.textContent = questions[currentQuestion].question;
+			optionsElement.innerHTML = '';
+
+			questions[currentQuestion].options.forEach(option => {
+				const button = document.createElement('button');
+				button.textContent = option;
+				button.onclick = () => checkAnswer(option);
+				optionsElement.appendChild(button);
+			});
+		}
+
+		function checkAnswer(selectedOption) {
+			if (selectedOption === questions[currentQuestion].answer) {
+				score++;
+			}
+
+			currentQuestion++;
+
+			if (currentQuestion < questions.length) {
+				loadQuestion();
+			} else {
+				showResult();
+			}
+		}
+
+		function showResult() {
+			const quizElement = document.getElementById('quiz');
+			const resultElement = document.getElementById('result');
+			const prizeElement = document.getElementById('prize');
+
+			quizElement.style.display = 'none';
+
+			if (score === questions.length) {
+				prizeElement.style.display = 'block';
+			} else {
+				resultElement.textContent = `Você acertou ${score} de ${questions.length} perguntas.`;
+				resultElement.style.display = 'block';
+			}
+		}
+
+		loadQuestion();
+	</script>
+</body>
+
+</html>
